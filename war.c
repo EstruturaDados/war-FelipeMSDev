@@ -15,12 +15,25 @@
 // ============================================================================
 
 // Inclusão das bibliotecas padrão necessárias para entrada/saída, alocação de memória, manipulação de strings e tempo.
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 // --- Constantes Globais ---
-// Definem valores fixos para o número de territórios, missões e tamanho máximo de strings, facilitando a manutenção.
+#define MAX_TERRITORIOS 5 // Definem valores fixos para o número de territórios, missões e tamanho máximo de strings, facilitando a manutenção.
 
 // --- Estrutura de Dados ---
 // Define a estrutura para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
+typedef struct {
+    char nome[50];
+    char cor [20];
+    int tropas;
+} territorio;
+
+void limparBufferEntrada() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
 
 // --- Protótipos das Funções ---
 // Declarações antecipadas de todas as funções que serão usadas no programa, organizadas por categoria.
@@ -32,6 +45,53 @@
 // --- Função Principal (main) ---
 // Função principal que orquestra o fluxo do jogo, chamando as outras funções em ordem.
 int main() {
+    
+    territorio continentes[MAX_TERRITORIOS];
+
+    printf ("============================================\n");
+    printf ("        BEM-VINDO AO JOGO WAR\n");
+    printf ("============================================\n");
+    printf ("\nVamos cadastrar os 5 territorios iniciais do nosso mundo:\n\n");
+
+    for (int i = 0; i < MAX_TERRITORIOS; i++) {
+        printf ("--- Cadastrando Territorio %d ---\n", i + 1);
+        printf ("Nome do Territorio: ");
+        fgets (continentes[i].nome, 30, stdin);
+
+        printf ("Cor do Exercito (ex: Azul, Verde): ");
+        fgets (continentes[i].cor, 10, stdin);
+
+        continentes[i].nome[strcspn(continentes[i].nome, "\n")] = '\0'; // Remove o '\n' do final da string
+        continentes[i].cor[strcspn(continentes[i].cor, "\n")] = '\0';
+
+        printf ("Numero de Tropas: ");
+        scanf ("%d", &continentes[i].tropas);
+        limparBufferEntrada(); // Limpa o '\n' deixado pelo scanf.
+        printf ("\n");
+    }
+
+    printf ("\n\nCadastro inicial concluido com sucesso!\n\n");
+
+    printf ("=============================================\n");
+    printf ("        MAPA DO MUNDO - ESTADO ATUAL\n");
+    printf ("=============================================\n\n");
+
+    for (int i = 0; i < MAX_TERRITORIOS; i++) {
+        printf ("TERRITORIO %d:\n", i + 1);
+        printf ("- Nome: %s\n", continentes[i].nome);
+        printf ("- Dominado por: Exercito %s\n", continentes[i].cor);
+        printf ("- Tropas: %d\n\n", continentes[i].tropas);
+    }
+
+    system ("pause");
+    return 0;
+        
+
+    
+    
+    
+    
+    
     // 1. Configuração Inicial (Setup):
     // - Define o locale para português.
     // - Inicializa a semente para geração de números aleatórios com base no tempo atual.
@@ -51,7 +111,7 @@ int main() {
     // 3. Limpeza:
     // - Ao final do jogo, libera a memória alocada para o mapa para evitar vazamentos de memória.
 
-    return 0;
+    
 }
 
 // --- Implementação das Funções ---
